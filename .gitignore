@@ -1,0 +1,12 @@
+# vscode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+#vscode extensions
+out
+node_modules
+.vscode-test/
+*.vsix

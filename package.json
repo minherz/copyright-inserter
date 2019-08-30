@@ -1,0 +1,66 @@
+{
+	"name": "copyright-header-inserter",
+	"displayName": "Copyright header inserter",
+	"description": "Inserts license header into source files",
+	"version": "0.0.1",
+	"icon": "resources/copyright.jpg",
+	"license": "SEE LICENSE IN LICENSE.txt",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/minherz/vscode-extension-samples"
+	},
+	"bugs": {
+		"url": "https://github.com/minherz/vscode-extension-samples/issues"
+	},
+	"engines": {
+		"vscode": "^1.32.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:copyright.insert.header"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "copyright.insert.header",
+				"title": "Copyright: insert.header"
+			}
+		],
+		"configuration": {
+			"title": "Copyright Inserter",
+			"properties": {
+				"copyright": {
+					"type": "string",
+					"default": "apache",
+					"description": "One of supported copyright licenses: apache, mit, bsd"
+				},
+				"holder": {
+					"type": "string",
+					"default": "Google LLC",
+					"description": "Copyright holder"
+				},
+				"year": {
+					"type": "string",
+					"default": "",
+					"description": "Copyright year. If not defined, the current year is used"
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/node": "^10.12.21",
+		"@types/vscode": "^1.37.0",
+		"typescript": "^3.3.1",
+		"tslint": "^5.12.1"
+	}
+}
