@@ -32,7 +32,7 @@
 		"configuration": {
 			"title": "Copyright Inserter",
 			"properties": {
-				"copyright": {
+				"license": {
 					"type": "string",
 					"default": "apache",
 					"description": "One of supported copyright licenses: apache, mit, bsd"
