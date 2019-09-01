@@ -1,6 +1,10 @@
-# license-inserter README
+# Copyright Header Inserter
 
-This is the README for your extension "license-inserter". After writing up a brief description, we recommend including the following sections.
+The Copyright Header Inserter is a VS Code extension that adds a copyright header into editing file.
+
+The header is defined based on the license type and the copyright holder that defined in the extension configuration. The extension supports [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0), [MIT](https://opensource.org/licenses/MIT) and [BSD](http://www.linfo.org/bsdlicense.html) licenses.
+By default, a copyright header is generated for Apache 2.0 license and 'Google LLC' holder.
+It is also possible to customize a copyright year. If the year is omitted, a current year will be used.
 
 ## Features
 

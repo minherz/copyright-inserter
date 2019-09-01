@@ -25,7 +25,7 @@ limitations under the License.`],
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.`],
 
-['mit', (holder: string, year: string) =>
+        ['mit', (holder: string, year: string) =>
 `Copyright (c) ${year} ${holder}
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
