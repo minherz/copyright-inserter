@@ -4,7 +4,7 @@
 	"description": "Inserts license header into source files",
 	"version": "0.0.1",
 	"icon": "resources/copyright.jpg",
-	"license": "SEE LICENSE IN LICENSE.txt",
+	"license": "SEE LICENSE IN LICENSE",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/minherz/vscode-extension-samples"
