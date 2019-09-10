@@ -1,5 +1,6 @@
 {
 	"name": "copyright-header-inserter",
+	"publisher": "minherz",
 	"displayName": "Copyright header inserter",
 	"description": "Inserts license header into source files",
 	"version": "0.0.1",
@@ -59,7 +60,7 @@
 	},
 	"devDependencies": {
 		"@types/node": "^10.12.21",
-		"@types/vscode": "^1.37.0",
+		"@types/vscode": "^1.32.0",
 		"typescript": "^3.3.1",
 		"tslint": "^5.12.1"
 	}
