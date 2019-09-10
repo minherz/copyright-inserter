@@ -1,9 +1,9 @@
 {
-	"name": "copyright-header-inserter",
+	"name": "copyrightHeaderInserter",
 	"publisher": "minherz",
-	"displayName": "Copyright header inserter",
-	"description": "Inserts license header into source files",
-	"version": "0.0.1",
+	"displayName": "Copyright Header Inserter",
+	"description": "Inserts copyright header of the selected license into active editor",
+	"version": "0.0.2",
 	"icon": "resources/copyright.jpg",
 	"license": "SEE LICENSE IN LICENSE",
 	"repository": {
@@ -31,19 +31,19 @@
 			}
 		],
 		"configuration": {
-			"title": "Copyright Inserter",
+			"title": "copyrightHeaderInserter",
 			"properties": {
-				"license": {
+				"copyrightHeaderInserter.license": {
 					"type": "string",
 					"default": "apache",
 					"description": "One of supported copyright licenses: apache, mit, bsd"
 				},
-				"holder": {
+				"copyrightHeaderInserter.holder": {
 					"type": "string",
 					"default": "Google LLC",
 					"description": "Copyright holder"
 				},
-				"year": {
+				"copyrightHeaderInserter.year": {
 					"type": "string",
 					"default": "",
 					"description": "Copyright year. If not defined, the current year is used"
