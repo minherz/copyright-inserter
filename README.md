@@ -1,69 +1,37 @@
 # Copyright Header Inserter
 
-The Copyright Header Inserter is a VS Code extension that adds a copyright header into editing file.
+The Copyright Header Inserter is a VS Code extension that adds a copyright header into editing file. It is relevant when publishing code into public domain. The development was inspired by [addlicense](https://github.com/google/addlicense) and [autogen](https://github.com/mbrukman/autogen) tools and comes to simplify the process by integrating with one of the most popular development environments.
 
-The header is defined based on the license type and the copyright holder that defined in the extension configuration. The extension supports [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0), [MIT](https://opensource.org/licenses/MIT) and [BSD](http://www.linfo.org/bsdlicense.html) licenses.
-By default, a copyright header is generated for Apache 2.0 license and 'Google LLC' holder.
-It is also possible to customize a copyright year. If the year is omitted, a current year will be used.
+The extension supports [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0), [MIT](https://opensource.org/licenses/MIT) and [BSD](http://www.linfo.org/bsdlicense.html) licenses.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+When invoked in the editor, the extension adds a copyright header at the top of the file.
+The extension captures the current language mode of the editor and uses the language configuration to decide where to insert the header and how to decorate it.
+The header is usually inserted into the first line. However, for language modes such as `shellscript`, `html` and `xml` which has mandatory declarations in the first line, the header is inserted next after the declaration line.
+The header is decorated using language's comment syntax. If the language has both block and line comments, the extension will use the block comments for the decoration.
 
-For example if there is an image subfolder under your extension project workspace:
+The extension can be invoked by typing `insert.header` or `Copyright: insert.header` in the [VSCode Command Palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette). No key binding is defined at the moment.
+
+TODO: add animation here:
 
 \!\[feature X\]\(images/feature-x.png\)
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+This extension adds the following settings into `Extensions` section under `Copyright Inserter`:
 
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+* `Holder`: a string describing the copyright holder. Default value is `Google LLC`
+* `License`: one of the following literals that define the copyright license: `apache` for Apache 2.0, `bsd` for BSD and `mit` for MIT. Default value is `apache`.
+* `Year`: a string describing the copyright year. Default value is empty string. If the string is empty, the current year will be used.
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+No known issues at the moment.
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 0.0.1
 
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Initial release of the Copyright Header Inserter. Supports adding copyright header to any file for which the [Language Mode](https://code.visualstudio.com/docs/languages/overview) defines comments.
