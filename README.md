@@ -28,10 +28,15 @@ This extension adds the following settings into `Extensions` section under `Copy
 
 ## Known Issues
 
-No known issues at the moment.
+* If the copyright and license header is already present. Another copy of the header will be inserted.
 
 ## Release Notes
 
 ### 0.0.1
 
 Initial release of the Copyright Header Inserter. Supports adding copyright header to any file for which the [Language Mode](https://code.visualstudio.com/docs/languages/overview) defines comments.
+
+### 0.0.4
+
+* Fixes multiple extensions to reuse the same languageId to work with different file extensions.
+

@@ -80,7 +80,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
             console.log("copyright-header-inserter: no active editor found");
             return;
         }
-        let language = this.getLanguageConfigById(editor.document.languageId);
+        let language = this.getLanguageConfigById(editor.document.languageId, editor.document.fileName);
         if (!language) {
             console.error(`copyright-header-inserter: failed to find configuration for language ${editor.document.languageId}`);
             return;
@@ -116,21 +116,22 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
         };
     }
 
-    private getLanguageConfigById(id: string): LanguageConfig | undefined {
-        let config:LanguageConfig = this.languageConfigurationMap.get(id);
+    private getLanguageConfigById(id: string, fileName: string): LanguageConfig | undefined {
+        let fileExt:string = path.extname(fileName).toLowerCase();
+        let config:LanguageConfig = this.languageConfigurationMap.get(id + "+" + fileExt);
         if (config) {
             return config;
         }
         for (const extension of vscode.extensions.all) {
             if (extension.packageJSON.contributes && extension.packageJSON.contributes.languages) {
-                const data = extension.packageJSON.contributes.languages.find((it: any) => it.id === id);
+                const data = extension.packageJSON.contributes.languages.find((it: any) => it.id === id && (!fileExt || it.extensions.indexOf(fileExt) >= 0));
                 if (data) {
                     config = {
                         id: id,
                         firstLine: data.firstLine ? new RegExp(data.firstLine) : undefined,
                         vsconfig: require(path.join(extension.extensionPath, data.configuration))
                     };
-                    this.languageConfigurationMap.set(id, config);
+                    this.languageConfigurationMap.set(id + "+" + fileExt, config);
                     return config;
                 }
             }
