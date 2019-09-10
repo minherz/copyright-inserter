@@ -1,17 +1,17 @@
 {
-	"name": "copyrightHeaderInserter",
+	"name": "copyright-inserter",
 	"publisher": "minherz",
-	"displayName": "Copyright Header Inserter",
+	"displayName": "Copyright Inserter",
 	"description": "Inserts copyright header of the selected license into active editor",
 	"version": "0.0.2",
 	"icon": "resources/copyright.jpg",
 	"license": "SEE LICENSE IN LICENSE",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/minherz/vscode-extension-samples"
+		"url": "https://github.com/minherz/copyright-inserter"
 	},
 	"bugs": {
-		"url": "https://github.com/minherz/vscode-extension-samples/issues"
+		"url": "https://github.com/minherz/copyright-inserter/issues"
 	},
 	"engines": {
 		"vscode": "^1.32.0"
@@ -31,19 +31,20 @@
 			}
 		],
 		"configuration": {
-			"title": "copyrightHeaderInserter",
+			"id": "copyrightInserter",
+			"title": "Copyright Inserter",
 			"properties": {
-				"copyrightHeaderInserter.license": {
+				"copyrightInserter.license": {
 					"type": "string",
 					"default": "apache",
-					"description": "One of supported copyright licenses: apache, mit, bsd"
+					"description": "A type of the license. Supported license types are 'apache', 'mit' and 'bsd'"
 				},
-				"copyrightHeaderInserter.holder": {
+				"copyrightInserter.holder": {
 					"type": "string",
 					"default": "Google LLC",
 					"description": "Copyright holder"
 				},
-				"copyrightHeaderInserter.year": {
+				"copyrightInserter.year": {
 					"type": "string",
 					"default": "",
 					"description": "Copyright year. If not defined, the current year is used"
