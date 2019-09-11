@@ -13,9 +13,9 @@ The header is decorated using language's comment syntax. If the language has bot
 
 The extension can be invoked by typing `insert.header` or `Copyright: insert.header` in the [VSCode Command Palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette). No key binding is defined at the moment.
 
-TODO: add animation here:
+## Demo
 
-\!\[feature X\]\(images/feature-x.png\)
+![Insert copyright header](resources/animation.gif)
 
 
 ## Extension Settings
