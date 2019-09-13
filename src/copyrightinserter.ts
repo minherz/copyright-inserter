@@ -15,6 +15,7 @@ limitations under the License.
 */
 import * as vscode from 'vscode';
 import * as path from 'path';
+import { start } from 'repl';
 
 
 export class CopyrightInserter {
@@ -92,7 +93,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
             return;
         }
 
-        let startLine:number = this.calculateInsertLine(editor, language);
+        if (this.hasCopyright(editor.document, language.vsconfig.comments)) {
+            console.log(`copyright-header-inserter: document already has copyright header`);
+            return;
+        }
+
+        let startLine:number = this.calculateInsertLine(editor.document, language);
         let header:string|undefined = this.formatHeader(licenseTemplate, extensionConfig.data, language.vsconfig);
         if (!header) {
             console.error(`copyright-header-inserter: language ${language.id} defines invalid comments`);
@@ -101,6 +107,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
 
         editor.edit( b =>
             {
+                // insert header to line 0 or 1; prefix with newline if document has only one line
+                if (startLine === editor.document.lineCount) {
+                    header = "\n" + header;
+                }
                 b.insert(new vscode.Position(startLine, 0), String(header));
             });      
     }
@@ -139,9 +149,31 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
         return undefined;
     }
 
-    private calculateInsertLine(editor: vscode.TextEditor, language: LanguageConfig): number {
+    private hasCopyright(doc: vscode.TextDocument, c: vscode.CommentRule): boolean {
+        let prefix = doc.getText(new vscode.Range(0, 0, 10, 0)); // assume the copyright part of header is in first 10 lines
+
+        if (c!.blockComment) {
+            let bcStart = this.escapeStringForRegexp(c!.blockComment[0]);
+            if (new RegExp(`^${bcStart}.*Copyright`, "mis").test(prefix)) {
+                return true;
+            }
+        }
+        if (c!.lineComment) {
+            let lc = this.escapeStringForRegexp(c!.lineComment);
+            if (new RegExp(`^${lc}.*Copyright`, "mi").test(prefix)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private escapeStringForRegexp(s: string): string {
+        return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    }
+
+    private calculateInsertLine(doc: vscode.TextDocument, language: LanguageConfig): number {
         let line: number = 0;
-        let firstLine = editor.document.getText(new vscode.Range(0, 0, 1, 0));
+        let firstLine = doc.getText(new vscode.Range(0, 0, 1, 0));
         if (language.firstLine) {
             let re = new RegExp(language.firstLine);
             if (re.test(firstLine)) {
@@ -158,6 +190,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
         }
         return line;
     }
+
     private formatHeader(template: (holder: string, year: string) => string, data: CopyrightData, language: vscode.LanguageConfiguration): string | undefined {
         const c = language.comments;
 
