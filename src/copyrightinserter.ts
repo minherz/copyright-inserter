@@ -191,15 +191,35 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
         return line;
     }
 
+    private formatString(header: string, first_line: string, prefix: string, post: string): string {
+        var cur_prefix = first_line
+        var result : string = ""
+        for (const line of header.split("\n")) {
+            const new_line = cur_prefix + line
+            result += new_line.trimRight() + "\n"
+            cur_prefix = prefix
+        }
+        return result + post
+    }
+
     private formatHeader(template: (holder: string, year: string) => string, data: CopyrightData, language: vscode.LanguageConfiguration): string | undefined {
         const c = language.comments;
 
         let header = template(data.holder, data.year);
         if (c!.blockComment) {
-            header = `${c!.blockComment[0]}\n${header}\n${c!.blockComment[1]}\n`;
+            if (c!.blockComment[0] == "/*") {
+                // Most c like languages (c, java, etc.) like prepending '*' before block-comments
+                // We want:
+                // /* the first line
+                //  * the second line
+                //  */
+                header = this.formatString(header, c!.blockComment[0] + " ", " * ", " " + c!.blockComment[1])
+            } else {
+                header = this.formatString(header, c!.blockComment[0] + "\n", "", c!.blockComment[1])
+            }
         } else if (c!.lineComment) {
             const prefix = c!.lineComment + " ";
-            header = prefix + header.replace(/\n/g, ("\n" + prefix)) + "\n"; // use regex to replace new line because string "\n" does not work well
+            header = this.formatString(header, prefix, prefix, "")
         } else {
             // unexpected case when comments defined but don't have values
             return undefined;
