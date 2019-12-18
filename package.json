@@ -3,7 +3,7 @@
 	"publisher": "minherz",
 	"displayName": "Copyright Inserter",
 	"description": "Inserts copyright header of the selected license into active editor",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"icon": "resources/copyright.jpg",
 	"license": "SEE LICENSE IN LICENSE",
 	"repository": {

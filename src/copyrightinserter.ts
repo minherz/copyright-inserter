@@ -118,10 +118,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
     private getExtensionConfig(): ExtensionConfiguration {
         const configView = vscode.workspace.getConfiguration();
         return {
-            license: (configView.get("license") || "apache"),
+            license: (configView.get("copyrightInserter.license") || "apache"),
             data: new CopyrightData(
-                String(configView.get("holder")),
-                configView.get("year") || String((new Date()).getFullYear())
+                String(configView.get("copyrightInserter.holder")),
+                configView.get("copyrightInserter.year") || String((new Date()).getFullYear())
                 )
         };
     }
