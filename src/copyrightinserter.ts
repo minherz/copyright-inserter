@@ -191,7 +191,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
         return line;
     }
 
-    private formatString(header: string, first_line: string, prefix: string, post: string): string {
+    private formatString(header: string, first_line: string, prefix: string, last_line: string): string {
         var cur_prefix = first_line
         var result : string = ""
         for (const line of header.split("\n")) {
@@ -199,7 +199,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
             result += new_line.trimRight() + "\n"
             cur_prefix = prefix
         }
-        return result + post
+        return result + last_line
     }
 
     private formatHeader(template: (holder: string, year: string) => string, data: CopyrightData, language: vscode.LanguageConfiguration): string | undefined {
@@ -207,15 +207,22 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
 
         let header = template(data.holder, data.year);
         if (c!.blockComment) {
+            // We want to format it as follows:
+            //
+            // <Block Comment Start>\n
+            // <Fist line of copyright>\n
+            // <etc.>\n
+            // <Block Comment End>\n
             if (c!.blockComment[0] == "/*") {
                 // Most c like languages (c, java, etc.) like prepending '*' before block-comments
                 // We want:
-                // /* the first line
+                // /*
+                //  * the first line
                 //  * the second line
                 //  */
-                header = this.formatString(header, c!.blockComment[0] + " ", " * ", " " + c!.blockComment[1])
+                header = this.formatString(header, c!.blockComment[0] + "\n * ", " * ", " " + c!.blockComment[1] + "\n")
             } else {
-                header = this.formatString(header, c!.blockComment[0] + "\n", "", c!.blockComment[1])
+                header = this.formatString(header, c!.blockComment[0] + "\n", "", c!.blockComment[1] + "\n")
             }
         } else if (c!.lineComment) {
             const prefix = c!.lineComment + " ";
