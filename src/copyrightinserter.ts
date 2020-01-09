@@ -192,14 +192,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
     }
 
     private formatString(header: string, first_line: string, prefix: string, last_line: string): string {
-        var cur_prefix = first_line
-        var result : string = ""
+        var cur_prefix = first_line;
+        var result : string = "";
+        header = "\n" + header;
         for (const line of header.split("\n")) {
-            const new_line = cur_prefix + line
-            result += new_line.trimRight() + "\n"
-            cur_prefix = prefix
+            const new_line = cur_prefix + line;
+            result += new_line.trimRight() + "\n";
+            cur_prefix = prefix;
         }
-        return result + last_line
+        return result + last_line;
     }
 
     private formatHeader(template: (holder: string, year: string) => string, data: CopyrightData, language: vscode.LanguageConfiguration): string | undefined {
@@ -213,20 +214,20 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
             // <Fist line of copyright>\n
             // <etc.>\n
             // <Block Comment End>\n
-            if (c!.blockComment[0] == "/*") {
+            if (c!.blockComment[0] === "/*") {
                 // Most c like languages (c, java, etc.) like prepending '*' before block-comments
                 // We want:
                 // /*
                 //  * the first line
                 //  * the second line
                 //  */
-                header = this.formatString(header, c!.blockComment[0] + "\n * ", " * ", " " + c!.blockComment[1] + "\n")
+                header = this.formatString(header, c!.blockComment[0], " * ", " " + c!.blockComment[1] + "\n");
             } else {
-                header = this.formatString(header, c!.blockComment[0] + "\n", "", c!.blockComment[1] + "\n")
+                header = this.formatString(header, c!.blockComment[0], "", c!.blockComment[1] + "\n");
             }
         } else if (c!.lineComment) {
             const prefix = c!.lineComment + " ";
-            header = this.formatString(header, prefix, prefix, "")
+            header = this.formatString(header, prefix, prefix, "");
         } else {
             // unexpected case when comments defined but don't have values
             return undefined;
