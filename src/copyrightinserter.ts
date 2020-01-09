@@ -211,8 +211,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
             // We want to format it as follows:
             //
             // <Block Comment Start>\n
-            // <Fist line of copyright>\n
-            // <etc.>\n
+            // <Prefix><Block Comment Start>\n
+            // <Prefix><Fist line of copyright>\n
+            // <Prefix><etc.>\n
             // <Block Comment End>\n
             if (c!.blockComment[0] === "/*") {
                 // Most c like languages (c, java, etc.) like prepending '*' before block-comments
