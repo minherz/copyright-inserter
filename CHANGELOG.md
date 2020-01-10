@@ -10,3 +10,7 @@ All notable changes to the "license-inserter" extension will be documented in th
 
 - Fix adding the license and copyright header to files which already have it
 - Fix adding the header to the end of the line instead of new line when a file has only one line
+
+## [1.0.2]
+
+- Fix not honoring the holder, year, and license settings.

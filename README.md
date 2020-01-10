@@ -39,3 +39,7 @@ Initial release of the Copyright Header Inserter. Supports adding copyright head
 ### 1.0.1
 
 Fixes a problem when the copyright and license header is already present in a file.
+
+### 1.0.2
+
+Actually honor the license, year, and holder settings.
