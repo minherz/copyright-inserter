@@ -42,4 +42,5 @@ Fixes a problem when the copyright and license header is already present in a fi
 
 ### 1.0.2
 
-Actually honor the license, year, and holder settings.
+Fix a bug that caused ignoring the extension settings.
+Format languages with /**/ block comment to prefix all lines in the header with *.

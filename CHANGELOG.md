@@ -13,4 +13,5 @@ All notable changes to the "license-inserter" extension will be documented in th
 
 ## [1.0.2]
 
-- Fix not honoring the holder, year, and license settings.
+- Fix not honoring the extension settings
+- Format languages with /**/ block comment to prefix all lines in the header with *

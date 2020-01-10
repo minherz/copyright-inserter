@@ -192,15 +192,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
     }
 
     private formatString(header: string, first_line: string, prefix: string, last_line: string): string {
-        var cur_prefix = first_line;
-        var result : string = "";
-        header = "\n" + header;
+        var result : string = first_line + "\n";
         for (const line of header.split("\n")) {
-            const new_line = cur_prefix + line;
+            const new_line = prefix + line;
             result += new_line.trimRight() + "\n";
-            cur_prefix = prefix;
         }
-        return result + last_line;
+        return result + last_line + "\n";
     }
 
     private formatHeader(template: (holder: string, year: string) => string, data: CopyrightData, language: vscode.LanguageConfiguration): string | undefined {
@@ -208,23 +205,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
 
         let header = template(data.holder, data.year);
         if (c!.blockComment) {
-            // We want to format it as follows:
-            //
-            // <Block Comment Start>\n
-            // <Prefix><Block Comment Start>\n
-            // <Prefix><Fist line of copyright>\n
-            // <Prefix><etc.>\n
-            // <Block Comment End>\n
             if (c!.blockComment[0] === "/*") {
-                // Most c like languages (c, java, etc.) like prepending '*' before block-comments
-                // We want:
-                // /*
-                //  * the first line
-                //  * the second line
-                //  */
-                header = this.formatString(header, c!.blockComment[0], " * ", " " + c!.blockComment[1] + "\n");
+                header = this.formatString(header, c!.blockComment[0], " * ", " " + c!.blockComment[1]);
             } else {
-                header = this.formatString(header, c!.blockComment[0], "", c!.blockComment[1] + "\n");
+                header = this.formatString(header, c!.blockComment[0], "", c!.blockComment[1]);
             }
         } else if (c!.lineComment) {
             const prefix = c!.lineComment + " ";
@@ -250,7 +234,7 @@ type ExtensionConfiguration = {
 
 class CopyrightData {
     holder: string = "Google LLC";
-    year: string;
+    year: string = String((new Date()).getFullYear());
 
     constructor(holder: string, year?: string) {
         if (holder) {
@@ -258,8 +242,6 @@ class CopyrightData {
         }
         if (year) {
             this.year = year;
-        } else {
-            this.year = String((new Date()).getFullYear());
         }
     }
 }
