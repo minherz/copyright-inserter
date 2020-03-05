@@ -24,7 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
     console.log('copyright-header-inserter: extension is now active');
 
     obj = new CopyrightInserter();
-    let disposable = vscode.commands.registerCommand('copyright.insert.header', insertHeader);
+    let disposable = vscode.commands.registerCommand('copyright.insertHeader', insertHeader);
     context.subscriptions.push(disposable);
 }
 

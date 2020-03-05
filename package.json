@@ -3,7 +3,7 @@
 	"publisher": "minherz",
 	"displayName": "Copyright Inserter",
 	"description": "Inserts copyright header of the selected license into active editor",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"icon": "resources/copyright.jpg",
 	"license": "SEE LICENSE IN LICENSE",
 	"repository": {
@@ -20,14 +20,14 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:copyright.insert.header"
+		"onCommand:copyright.insertHeader"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "copyright.insert.header",
-				"title": "Copyright: insert.header"
+				"command": "copyright.insertHeader",
+				"title": "Copyright: Insert Header"
 			}
 		],
 		"configuration": {

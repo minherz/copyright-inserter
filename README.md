@@ -11,7 +11,7 @@ The extension captures the current language mode of the editor and uses the lang
 The header is usually inserted into the first line. However, for language modes such as `shellscript`, `html` and `xml` which has mandatory declarations in the first line, the header is inserted next after the declaration line.
 The header is decorated using language's comment syntax. If the language has both block and line comments, the extension will use the block comments for the decoration.
 
-The extension can be invoked by typing `insert.header` or `Copyright: insert.header` in the [VSCode Command Palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette). No key binding is defined at the moment.
+The extension can be invoked by typing `insert header` or `Copyright: insert header` in the [VSCode Command Palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette). No key binding is defined at the moment.
 
 ## Demo
 
@@ -44,3 +44,8 @@ Fixes a problem when the copyright and license header is already present in a fi
 
 Fix a bug that caused ignoring the extension settings.
 Format languages with /**/ block comment to prefix all lines in the header with *.
+
+### 1.0.3
+
+Fix a bug that caused to fail if vscode language configuration is JSON with comments.
+Change invocation command from `Copyright: insert.header` to `Copyright: Insert Header`.

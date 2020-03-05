@@ -15,7 +15,6 @@ limitations under the License.
 */
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { start } from 'repl';
 
 
 export class CopyrightInserter {
@@ -139,7 +138,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
                     config = {
                         id: id,
                         firstLine: data.firstLine ? new RegExp(data.firstLine) : undefined,
-                        vsconfig: require(path.join(extension.extensionPath, data.configuration))
+                        vsconfig: this.loadLanguageConfiguration(path.join(extension.extensionPath, data.configuration))
                     };
                     this.languageConfigurationMap.set(id + "+" + fileExt, config);
                     return config;
@@ -165,6 +164,27 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
             }
         }
         return false;
+    }
+
+    private loadLanguageConfiguration(uri: string): vscode.LanguageConfiguration {
+        // try to load JSON ECMA-262
+        try {
+            return require(uri);
+        }
+        catch (e) {
+            if (!(e instanceof SyntaxError)) {
+                throw e;
+            }        
+        }
+        // if fail due syntax error (e.g. because it is JSON with comments), try to remove comments and parse JSON
+        var fs = require('fs');
+        var lines = fs.readFileSync(uri, 'utf8').split('\n');
+        for (let i = lines.length - 1; i >=0; i--) {
+            if (lines[i].trimStart().startsWith('//')) {
+                lines[i] = "\r";
+            }
+        }
+        return JSON.parse(lines.join('\n'));
     }
 
     private escapeStringForRegexp(s: string): string {
@@ -206,7 +226,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
         let header = template(data.holder, data.year);
         if (c!.blockComment) {
             if (c!.blockComment[0] === "/*") {
-                header = this.formatString(header, c!.blockComment[0], " * ", " " + c!.blockComment[1]);
+                header = this.formatString(header, c!.blockComment[0] + "*", " * ", " " + c!.blockComment[1]);
             } else {
                 header = this.formatString(header, c!.blockComment[0], "", c!.blockComment[1]);
             }
