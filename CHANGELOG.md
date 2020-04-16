@@ -20,3 +20,7 @@ All notable changes to the "license-inserter" extension will be documented in th
 
 - Fix a bug that caused to fail if vscode language configuration is JSON with comments
 - Change invocation command from `Copyright: insert.header` to `Copyright: Insert Header`
+
+## [1.0.4]
+
+- Update Apache license URL schema from `http://` to `https://`
