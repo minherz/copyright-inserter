@@ -24,3 +24,7 @@ All notable changes to the "license-inserter" extension will be documented in th
 ## [1.0.4]
 
 - Update Apache license URL schema from `http://` to `https://`
+
+## [1.0.5]
+
+- Fix ([#3](https://github.com/minherz/copyright-inserter/issues/3)) by configuring extension to run on local host.

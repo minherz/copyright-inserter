@@ -53,3 +53,9 @@ Change invocation command from `Copyright: insert.header` to `Copyright: Insert 
 ### 1.0.4
 
 Update Apache license URL schema from `http://` to `https://`.
+
+### 1.0.5
+
+Configure extension to run as UI extension on the local environment when remote environment / containers are used.
+
+
