@@ -28,3 +28,8 @@ All notable changes to the "license-inserter" extension will be documented in th
 ## [1.0.5]
 
 - Fix ([#3](https://github.com/minherz/copyright-inserter/issues/3)) by configuring extension to run on local host.
+
+## [1.0.6]
+
+- Add option always select one line comment.
+- Support languages without comments.

@@ -25,6 +25,7 @@ This extension adds the following settings into `Extensions` section under `Copy
 * `copyrightInserter.holder`: a string describing the copyright holder. Default value is `Google LLC`
 * `copyrightInserter.license`: one of the following literals that define the copyright license: `apache` for Apache 2.0, `bsd` for BSD and `mit` for MIT. Default value is `apache`.
 * `copyrightInserter.year`: a string describing the copyright year. Default value is empty string. If the string is empty, the current year will be used.
+* `copyrightInserter.useLineComment`: a boolean flag to describe selection between block and line comments. Default is `false`.
 
 ## Known Issues
 
@@ -58,4 +59,7 @@ Update Apache license URL schema from `http://` to `https://`.
 
 Configure extension to run as UI extension on the local environment when remote environment / containers are used.
 
+### 1.0.6
 
+Add option always select one line comment.
+Support languages without comments.

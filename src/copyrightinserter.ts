@@ -18,7 +18,12 @@ import * as path from 'path';
 
 
 export class CopyrightInserter {
-    // mind empty lines and identation, they are meaningful
+    // map of supported license labels to inline formatting functions that
+    // insert copyright holder and year into the license
+    // currently supported licenses are:
+    // 'apache' - APACHE 2.0
+    // 'bsd' - BSD
+    // 'mit' - MIT
     readonly CopyrightMap = new Map([
         ['apache', (holder: string, year: string) =>
 `Copyright ${year} ${holder}
@@ -61,8 +66,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
     ]);
 
-    // language configuration cache
-    languageConfigurationMap = new Map();
+    cachedLanguageConfigs = new Map();
 
     constructor() { }
 
@@ -86,19 +90,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
             return;
         }
 
-        // for now do not support languages without comments
-        if (!language.vsconfig.comments) {
-            console.error(`copyright-header-inserter: language ${editor.document.languageId} does not support comments`);
-            return;
-        }
-
         if (this.hasCopyright(editor.document, language.vsconfig.comments)) {
             console.log(`copyright-header-inserter: document already has copyright header`);
             return;
         }
 
-        let startLine:number = this.calculateInsertLine(editor.document, language);
-        let header:string|undefined = this.formatHeader(licenseTemplate, extensionConfig.data, language.vsconfig);
+        let startLine:number = this.calculateInsertLineIndex(editor.document, language);
+        let header:string|undefined = this.formatHeader(licenseTemplate, extensionConfig.data, language.vsconfig, extensionConfig.useLineComment);
         if (!header) {
             console.error(`copyright-header-inserter: language ${language.id} defines invalid comments`);
             return;
@@ -106,7 +104,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
 
         editor.edit( b =>
             {
-                // insert header to line 0 or 1; prefix with newline if document has only one line
+                // prefix with newline if document has only one line
                 if (startLine === editor.document.lineCount) {
                     header = "\n" + header;
                 }
@@ -118,6 +116,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
         const configView = vscode.workspace.getConfiguration();
         return {
             license: (configView.get("copyrightInserter.license") || "apache"),
+            useLineComment: (configView.get("copyrightInserter.useLineComment") || false),
             data: new CopyrightData(
                 String(configView.get("copyrightInserter.holder")),
                 configView.get("copyrightInserter.year") || String((new Date()).getFullYear())
@@ -127,7 +126,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
 
     private getLanguageConfigById(id: string, fileName: string): LanguageConfig | undefined {
         let fileExt:string = path.extname(fileName).toLowerCase();
-        let config:LanguageConfig = this.languageConfigurationMap.get(id + "+" + fileExt);
+        let config:LanguageConfig = this.cachedLanguageConfigs.get(id + "+" + fileExt);
         if (config) {
             return config;
         }
@@ -140,7 +139,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
                         firstLine: data.firstLine ? new RegExp(data.firstLine) : undefined,
                         vsconfig: this.loadLanguageConfiguration(path.join(extension.extensionPath, data.configuration))
                     };
-                    this.languageConfigurationMap.set(id + "+" + fileExt, config);
+                    this.cachedLanguageConfigs.set(id + "+" + fileExt, config);
                     return config;
                 }
             }
@@ -148,17 +147,20 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
         return undefined;
     }
 
-    private hasCopyright(doc: vscode.TextDocument, c: vscode.CommentRule): boolean {
-        let prefix = doc.getText(new vscode.Range(0, 0, 10, 0)); // assume the copyright part of header is in first 10 lines
+    private hasCopyright(doc: vscode.TextDocument, c?: vscode.CommentRule): boolean {
+        // search for copyright part of the license header in first 10 lines
+        let prefix = doc.getText(new vscode.Range(0, 0, 10, 0));
 
         if (c!.blockComment) {
             let bcStart = this.escapeStringForRegexp(c!.blockComment[0]);
+            // treat "^" working over multiple lines, ignore casing and allow "." to match newline 
             if (new RegExp(`^${bcStart}.*Copyright`, "mis").test(prefix)) {
                 return true;
             }
         }
         if (c!.lineComment) {
             let lc = this.escapeStringForRegexp(c!.lineComment);
+            // treat "^" working over multiple lines and ignore casing
             if (new RegExp(`^${lc}.*Copyright`, "mi").test(prefix)) {
                 return true;
             }
@@ -188,10 +190,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
     }
 
     private escapeStringForRegexp(s: string): string {
+        // see explanations in https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#Escaping
         return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
     }
 
-    private calculateInsertLine(doc: vscode.TextDocument, language: LanguageConfig): number {
+    private calculateInsertLineIndex(doc: vscode.TextDocument, language: LanguageConfig): number {
         let line: number = 0;
         let firstLine = doc.getText(new vscode.Range(0, 0, 1, 0));
         if (language.firstLine) {
@@ -200,7 +203,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
                 line = 1;
             }
         }
-        // fix vscode 'html' language contribution that does not define first line but opt out to have
+        // fix vscode 'html' language contribution that does not define first line but opt out to have one
         if (language.id === "html" && firstLine.startsWith("<!doctype")) {
             line = 1;
         }
@@ -212,19 +215,23 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
     }
 
     private formatString(header: string, first_line: string, prefix: string, last_line: string): string {
-        var result : string = first_line + "\n";
+        var result : string = "";
+
+        if (first_line !== "") {
+            result += first_line + "\n";
+        }
         for (const line of header.split("\n")) {
             const new_line = prefix + line;
             result += new_line.trimRight() + "\n";
         }
-        return result + last_line + "\n";
+        return result += last_line + "\n";
     }
 
-    private formatHeader(template: (holder: string, year: string) => string, data: CopyrightData, language: vscode.LanguageConfiguration): string | undefined {
+    private formatHeader(template: (holder: string, year: string) => string, data: CopyrightData, language: vscode.LanguageConfiguration, useLineComment: boolean): string {
         const c = language.comments;
 
         let header = template(data.holder, data.year);
-        if (c!.blockComment) {
+        if (!useLineComment && c!.blockComment) {
             if (c!.blockComment[0] === "/*") {
                 header = this.formatString(header, c!.blockComment[0] + "*", " * ", " " + c!.blockComment[1]);
             } else {
@@ -234,8 +241,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`]
             const prefix = c!.lineComment + " ";
             header = this.formatString(header, prefix, prefix, "");
         } else {
-            // unexpected case when comments defined but don't have values
-            return undefined;
+            header = this.formatString(header, "", "", "");
         }
         return header;
     }
@@ -249,6 +255,7 @@ type LanguageConfig = {
 
 type ExtensionConfiguration = {
     license: string;
+    useLineComment: boolean,
     data: CopyrightData;
 };
 
