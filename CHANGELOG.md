@@ -33,3 +33,7 @@ All notable changes to the "license-inserter" extension will be documented in th
 
 - Add option always select one line comment.
 - Support languages without comments.
+
+## [1.0.7]
+
+- Add GPL 3 license to the list of the supported licenses.

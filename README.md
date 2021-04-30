@@ -23,7 +23,7 @@ The extension can be invoked by typing `insert header` or `Copyright: insert hea
 This extension adds the following settings into `Extensions` section under `Copyright Inserter`:
 
 * `copyrightInserter.holder`: a string describing the copyright holder. Default value is `Google LLC`
-* `copyrightInserter.license`: one of the following literals that define the copyright license: `apache` for Apache 2.0, `bsd` for BSD and `mit` for MIT. Default value is `apache`.
+* `copyrightInserter.license`: one of the following literals that define the copyright license: `apache` for Apache 2.0, `bsd` for BSD, `mit` for MIT and `gpl3` for GPL version 3. Default value is `apache`.
 * `copyrightInserter.year`: a string describing the copyright year. Default value is empty string. If the string is empty, the current year will be used.
 * `copyrightInserter.useLineComment`: a boolean flag to describe selection between block and line comments. Default is `false`.
 
@@ -63,3 +63,7 @@ Configure extension to run as UI extension on the local environment when remote 
 
 Add option always select one line comment.
 Support languages without comments.
+
+### 1.0.7
+
+Add GPL version 3 license.
