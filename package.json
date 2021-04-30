@@ -41,7 +41,7 @@
 				"copyrightInserter.license": {
 					"type": "string",
 					"default": "apache",
-					"description": "A type of the license. Supported license types are 'apache', 'mit' and 'bsd'"
+					"description": "A type of the license. Supported license types are 'apache', 'mit', 'bsd' and 'gpl3'"
 				},
 				"copyrightInserter.holder": {
 					"type": "string",
