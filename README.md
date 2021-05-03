@@ -67,3 +67,5 @@ Support languages without comments.
 ### 1.0.7
 
 Add GPL version 3 license.
+Fix to do not insert an empty line at the top of the copyright with `copyrightInserter.useLineComment` set as false.
+Fix to always add an empty line after the copyright with `copyrightInserter.useLineComment` set as true.
