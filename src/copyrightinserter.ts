@@ -255,7 +255,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.`]
             }
         } else if (c!.lineComment) {
             const prefix = c!.lineComment + " ";
-            header = this.formatString(header, prefix, prefix, "");
+            header = this.formatString(header, "", prefix, "");
         } else {
             header = this.formatString(header, "", "", "");
         }
