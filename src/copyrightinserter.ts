@@ -249,13 +249,17 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.`]
         return result += last_line +"\n";
     }
 
-    private formatHeader(template: (holder: string, year: string) => string, data: CopyrightData, language: vscode.LanguageConfiguration, useLineComment: boolean): string {
+    private formatHeader(template: (holder: string, year: string) => string, data: CopyrightData, language: vscode.LanguageConfiguration, useLineComment: boolean): string | undefined {
         const c = language.comments;
 
         let header = template(data.holder, data.year);
         if (!useLineComment && c!.blockComment) {
-            if (c!.blockComment[0] === "/*") {
-                header = this.formatString(header, c!.blockComment[0] + "*", " * ", " " + c!.blockComment[1]);
+            let openExp = c!.blockComment[0];
+            let closExp = c!.blockComment[1];
+            
+            // assume the length of openExp and closExp is same
+            if (openExp[openExp.length-1] === closExp[0]) {
+                header = this.formatString(header, c!.blockComment[0], " ", " " + c!.blockComment[1]);
             } else {
                 header = this.formatString(header, c!.blockComment[0], "", c!.blockComment[1]);
             }
@@ -263,7 +267,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.`]
             const prefix = c!.lineComment + " ";
             header = this.formatString(header, prefix, prefix, "");
         } else {
-            header = this.formatString(header, "", "", "");
+            return undefined;
         }
         return header;
     }
