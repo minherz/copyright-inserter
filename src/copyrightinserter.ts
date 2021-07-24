@@ -111,7 +111,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.`]
             return;
         }
 
-        let startLine:number = this.calculateInsertLineIndex(editor.document, language);
+        let firstLine = editor.document.getText(new vscode.Range(0, 0, 1, 0));
+        let needLineBeforeBlock = this.hasMandatoryFirstLine(firstLine, language);
+        let needLineAfterBlock = (firstLine && (!needLineBeforeBlock || editor.document.getText(new vscode.Range(1, 0, 2, 0)).trim())) ? true : false;
+
         let header:string|undefined = this.formatHeader(licenseTemplate, extensionConfig.data, language.vsconfig, extensionConfig.useLineComment);
         if (!header) {
             console.error(`copyright-header-inserter: language ${language.id} defines invalid comments`);
@@ -120,9 +123,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.`]
 
         editor.edit( b =>
             {
-                // prefix with newline if document has only one line
-                if (startLine === editor.document.lineCount) {
+                let startLine:number = 0;
+
+                if (needLineBeforeBlock === true) {
                     header = "\n" + header;
+                    startLine = 1;
+                }
+                if (needLineAfterBlock === true) {
+                    header = header + "\n";
                 }
                 b.insert(new vscode.Position(startLine, 0), String(header));
             });      
@@ -210,24 +218,22 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.`]
         return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
     }
 
-    private calculateInsertLineIndex(doc: vscode.TextDocument, language: LanguageConfig): number {
-        let line: number = 0;
-        let firstLine = doc.getText(new vscode.Range(0, 0, 1, 0));
+    private hasMandatoryFirstLine(firstLine: string, language: LanguageConfig): boolean {
         if (language.firstLine) {
             let re = new RegExp(language.firstLine);
             if (re.test(firstLine)) {
-                line = 1;
+                return true;
             }
         }
         // fix vscode 'html' language contribution that does not define first line but opt out to have one
-        if (language.id === "html" && firstLine.startsWith("<!doctype")) {
-            line = 1;
+        if (language.id === "html" && firstLine.toLowerCase().startsWith("<!doctype")) {
+            return true;
         }
         // fix vscode 'shellscript' language firstLine regex that matches only limited set of commands
         if (language.id === "shellscript" && firstLine.startsWith("#!/")) {
-            line = 1;
+            return true;
         }
-        return line;
+        return false;
     }
 
     private formatString(header: string, first_line: string, prefix: string, last_line: string): string {
@@ -240,24 +246,28 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.`]
             const new_line = prefix + line;
             result += new_line.trimRight() + "\n";
         }
-        return result += last_line + "\n";
+        return result += last_line ? (last_line +"\n") : "";
     }
 
-    private formatHeader(template: (holder: string, year: string) => string, data: CopyrightData, language: vscode.LanguageConfiguration, useLineComment: boolean): string {
+    private formatHeader(template: (holder: string, year: string) => string, data: CopyrightData, language: vscode.LanguageConfiguration, useLineComment: boolean): string | undefined {
         const c = language.comments;
 
         let header = template(data.holder, data.year);
         if (!useLineComment && c!.blockComment) {
-            if (c!.blockComment[0] === "/*") {
-                header = this.formatString(header, c!.blockComment[0] + "*", " * ", " " + c!.blockComment[1]);
+            let openExp = c!.blockComment[0];
+            let closExp = c!.blockComment[1];
+            
+            // assume the length of openExp and closExp is same
+            if (openExp[openExp.length-1] === closExp[0]) {
+                header = this.formatString(header, c!.blockComment[0], " ", " " + c!.blockComment[1]);
             } else {
                 header = this.formatString(header, c!.blockComment[0], "", c!.blockComment[1]);
             }
         } else if (c!.lineComment) {
             const prefix = c!.lineComment + " ";
-            header = this.formatString(header, prefix, prefix, "");
+            header = this.formatString(header, "", prefix, "");
         } else {
-            header = this.formatString(header, "", "", "");
+            return undefined;
         }
         return header;
     }

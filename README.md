@@ -67,3 +67,8 @@ Support languages without comments.
 ### 1.0.7
 
 Add GPL version 3 license.
+
+### 1.0.8
+
+Fix issues related to license block's layouts for line and block comments modes.
+Upgrade dependencies to resolve minor security vulnerability.

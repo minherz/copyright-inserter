@@ -37,3 +37,8 @@ All notable changes to the "license-inserter" extension will be documented in th
 ## [1.0.7]
 
 - Add GPL 3 license to the list of the supported licenses.
+
+## [1.0.8]
+
+- Fix issues related to license block's layouts for line and block comments modes.
+- Upgrade dependencies to resolve minor security vulnerability.
