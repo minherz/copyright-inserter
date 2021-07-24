@@ -246,7 +246,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.`]
             const new_line = prefix + line;
             result += new_line.trimRight() + "\n";
         }
-        return result += last_line +"\n";
+        return result += last_line ? (last_line +"\n") : "";
     }
 
     private formatHeader(template: (holder: string, year: string) => string, data: CopyrightData, language: vscode.LanguageConfiguration, useLineComment: boolean): string | undefined {
@@ -265,7 +265,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.`]
             }
         } else if (c!.lineComment) {
             const prefix = c!.lineComment + " ";
-            header = this.formatString(header, prefix, prefix, "");
+            header = this.formatString(header, "", prefix, "");
         } else {
             return undefined;
         }
