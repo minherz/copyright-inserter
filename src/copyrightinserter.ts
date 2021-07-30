@@ -115,9 +115,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.`]
         let needLineBeforeBlock = this.hasMandatoryFirstLine(firstLine, language);
         let needLineAfterBlock = (firstLine && (!needLineBeforeBlock || editor.document.getText(new vscode.Range(1, 0, 2, 0)).trim())) ? true : false;
 
-        let header:string|undefined = this.formatHeader(licenseTemplate, extensionConfig.data, language.vsconfig, extensionConfig.useLineComment);
+        let header:string|undefined = this.formatHeader(licenseTemplate, extensionConfig.data, language, extensionConfig.useLineComment);
         if (!header) {
-            console.error(`copyright-header-inserter: language ${language.id} defines invalid comments`);
             return;
         }
 
@@ -249,24 +248,28 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.`]
         return result += last_line ? (last_line +"\n") : "";
     }
 
-    private formatHeader(template: (holder: string, year: string) => string, data: CopyrightData, language: vscode.LanguageConfiguration, useLineComment: boolean): string | undefined {
-        const c = language.comments;
-
+    private formatHeader(template: (holder: string, year: string) => string, data: CopyrightData, language: LanguageConfig, useLineComment: boolean): string | undefined {
+        const c = language.vsconfig.comments;
         let header = template(data.holder, data.year);
-        if (!useLineComment && c!.blockComment) {
+
+        // use block comment
+        if (c!.blockComment && (!useLineComment || !c!.lineComment)) {
+            if (useLineComment) {
+                console.warn(`copyright-header-inserter: use block comments nevertheless "Use Line Comment" setting is set because language ${language.id} does not have line comments`);
+            }
             let openExp = c!.blockComment[0];
             let closExp = c!.blockComment[1];
-            
-            // assume the length of openExp and closExp is same
+            // indent header by one space if first char of open comment same as last char of close comment
             if (openExp[openExp.length-1] === closExp[0]) {
                 header = this.formatString(header, c!.blockComment[0], " ", " " + c!.blockComment[1]);
             } else {
                 header = this.formatString(header, c!.blockComment[0], "", c!.blockComment[1]);
             }
-        } else if (c!.lineComment) {
+        } else if (c!.lineComment && (useLineComment || !c!.blockComment)) {
             const prefix = c!.lineComment + " ";
             header = this.formatString(header, "", prefix, "");
         } else {
+            console.error(`copyright-header-inserter: language ${language.id} does not define comments`);
             return undefined;
         }
         return header;

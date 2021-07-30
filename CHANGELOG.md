@@ -42,3 +42,6 @@ All notable changes to the "license-inserter" extension will be documented in th
 
 - Fix issues related to license block's layouts for line and block comments modes.
 - Upgrade dependencies to resolve minor security vulnerability.
+
+## [1.0.9]
+- Fix issue with inserting license block when 'Use Line Comment' is set but a file's language does not have line comment.
