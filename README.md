@@ -31,48 +31,4 @@ This extension adds the following settings into `Extensions` section under `Copy
 
 None
 
-## Release Notes
-
-### 1.0.0
-
-Initial release of the Copyright Header Inserter. Supports adding copyright header to any file for which the [Language Mode](https://code.visualstudio.com/docs/languages/overview) defines comments.
-
-### 1.0.1
-
-Fixes a problem when the copyright and license header is already present in a file.
-
-### 1.0.2
-
-Fix a bug that caused ignoring the extension settings.
-Format languages with /**/ block comment to prefix all lines in the header with *.
-
-### 1.0.3
-
-Fix a bug that caused to fail if vscode language configuration is JSON with comments.
-Change invocation command from `Copyright: insert.header` to `Copyright: Insert Header`.
-
-### 1.0.4
-
-Update Apache license URL schema from `http://` to `https://`.
-
-### 1.0.5
-
-Configure extension to run as UI extension on the local environment when remote environment / containers are used.
-
-### 1.0.6
-
-Add option always select one line comment.
-Support languages without comments.
-
-### 1.0.7
-
-Add GPL version 3 license.
-
-### 1.0.8
-
-Fix issues related to license block's layouts for line and block comments modes.
-Upgrade dependencies to resolve minor security vulnerability.
-
-### 1.0.9
-
-Fix issue with inserting license block when 'Use Line Comment' is set but a file's language does not have line comment.
+## [Release Notes](CHANGELOG.md)
