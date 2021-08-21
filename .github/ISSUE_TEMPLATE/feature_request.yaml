@@ -1,0 +1,38 @@
+name: Feature Request
+description: File a feature request
+title: "[FR]: "
+labels: [feature, triage]
+assignees:
+- minherz
+body:
+- type: markdown
+  attributes:
+    value: |
+      Thank you for using our plugin and wanting to make it better.
+- type: input
+  id: contact
+  attributes:
+    label: Contact Details
+    description: How we can get in touch with you other than via commenting on the github issue
+    placeholder: ex. email@example.com
+  validations:
+    required: false
+- type: dropdown
+  id: version
+  attributes:
+    label: Plugin Version
+    description: What version of the plugin do you use?
+    options:
+    - Older
+    - 1.0.7
+    - 1.0.8
+    - 1.0.9
+  validations:
+    required: false
+- type: textarea
+  id: problem-desc
+  attributes:
+    label: What do you propose?
+    description: Tell us what functionality would you like to have.
+  validations:
+    required: true
