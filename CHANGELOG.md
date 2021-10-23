@@ -41,3 +41,6 @@
 
 ## [1.0.9]
 - Fix issue with inserting license block when 'Use Line Comment' is set but a file's language does not have line comment.
+
+## [1.0.10]
+- Add `linePrefix` configuration allowing to customize a prefix for each line of the copyright.
