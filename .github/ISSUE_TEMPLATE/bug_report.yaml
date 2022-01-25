@@ -1,4 +1,4 @@
-chorename: Bug Report
+name: Bug Report
 description: File a bug report
 title: "[BUG]: "
 labels: [bug, triage]
@@ -17,16 +17,12 @@ body:
     placeholder: ex. email@example.com
   validations:
     required: false
-- type: dropdown
+- type: input
   id: version
   attributes:
     label: Plugin Version
     description: What version of the plugin do you use?
-    options:
-    - Older
-    - 1.0.7
-    - 1.0.8
-    - 1.0.9
+    placeholder: ex. 1.0.10
   validations:
     required: true
 - type: textarea
