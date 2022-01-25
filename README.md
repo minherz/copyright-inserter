@@ -2,7 +2,7 @@
 
 The Copyright Inserter is a VS Code extension that adds a copyright and license header into editing files. The development was inspired by [addlicense](https://github.com/google/addlicense) and [autogen](https://github.com/mbrukman/autogen) tools and comes to simplify the process of adding copyright and license into files during development by integrating with one of the most popular development environments.
 
-The extension supports [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0), [MIT](https://opensource.org/licenses/MIT) and [BSD](http://www.linfo.org/bsdlicense.html) licenses.
+The extension supports [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0), [MIT](https://opensource.org/licenses/MIT), [BSD](http://www.linfo.org/bsdlicense.html), [GPL 3](https://www.gnu.org/licenses/gpl-3.0.en.html) and [Affero GPL 3](https://www.gnu.org/licenses/agpl-3.0.en.html) licenses.
 
 ## Features
 
@@ -23,7 +23,7 @@ The extension can be invoked by typing `insert header` or `Copyright: insert hea
 This extension adds the following settings into `Extensions` section under `Copyright Inserter`:
 
 * `copyrightInserter.holder`: a string describing the copyright holder. Default value is `Google LLC`
-* `copyrightInserter.license`: one of the following literals that define the copyright license: `apache` for Apache 2.0, `bsd` for BSD, `mit` for MIT and `gpl3` for GPL version 3. Default value is `apache`.
+* `copyrightInserter.license`: one of the following literals that define the copyright license: `apache` for Apache 2.0, `bsd` for BSD, `mit` for MIT, `gpl3` for GPL version 3 and `agpl3` for Affero GPL version 3. Default value is `apache`.
 * `copyrightInserter.year`: a string describing the copyright year. Default value is empty string. If the string is empty, the current year will be used.
 * `copyrightInserter.useLineComment`: a boolean flag to describe selection between block and line comments. Default is `false`.
 
