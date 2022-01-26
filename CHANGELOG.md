@@ -44,3 +44,6 @@
 
 ## [1.0.10]
 - Add `linePrefix` configuration allowing to customize a prefix for each line of the copyright.
+
+## [1.0.11]
+- Add `Affero GPL 3` license to the list of the supported licenses. 
