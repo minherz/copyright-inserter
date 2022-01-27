@@ -3,7 +3,7 @@
 	"publisher": "minherz",
 	"displayName": "Copyright Inserter",
 	"description": "Inserts copyright header of the selected license into active editor",
-	"version": "1.0.10",
+	"version": "1.0.11",
 	"icon": "resources/copyright.jpg",
 	"license": "SEE LICENSE IN LICENSE",
 	"repository": {
@@ -41,7 +41,7 @@
 				"copyrightInserter.license": {
 					"type": "string",
 					"default": "apache",
-					"description": "A type of the license. Supported license types are 'apache', 'mit', 'bsd' and 'gpl3'"
+					"description": "A type of the license. Supported license types are 'apache', 'mit', 'bsd', 'gpl3' and 'agpl3'"
 				},
 				"copyrightInserter.holder": {
 					"type": "string",
