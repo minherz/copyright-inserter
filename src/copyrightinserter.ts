@@ -227,6 +227,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.`]
             if (lines[i].trimStart().startsWith('//')) {
                 lines[i] = "\r";
             }
+            if (lines[i+1] && lines[i].trimRight().endsWith(',') && (lines[i+1].trimStart().startsWith(']') || lines[i+1].trimStart().startsWith('}'))) {
+                lines[i] = lines[i].trimRight().replace(/,$/, '')
+            }
         }
         return JSON.parse(lines.join('\n'));
     }
