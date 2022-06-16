@@ -47,3 +47,6 @@
 
 ## [1.0.11]
 - Add `Affero GPL 3` license to the list of the supported licenses. 
+
+## [1.0.12]
+- Change Json parser to improve parsing language configurations that do not comply with Json ECMA-262
