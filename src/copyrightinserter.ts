@@ -15,7 +15,7 @@ limitations under the License.
 */
 import * as vscode from 'vscode';
 import * as path from 'path';
-
+import { parse } from 'jsonc-parser'
 
 export class CopyrightInserter {
     // map of supported license labels to inline formatting functions that
@@ -220,15 +220,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.`]
                 throw e;
             }        
         }
-        // if fail due syntax error (e.g. because it is JSON with comments), try to remove comments and parse JSON
         var fs = require('fs');
-        var lines = fs.readFileSync(uri, 'utf8').split('\n');
-        for (let i = lines.length - 1; i >=0; i--) {
-            if (lines[i].trimStart().startsWith('//')) {
-                lines[i] = "\r";
-            }
-        }
-        return JSON.parse(lines.join('\n'));
+        var jsonString = fs.readFileSync(uri, 'utf8');
+
+        return parse(jsonString, undefined, { disallowComments: false, allowTrailingComma: true })
     }
 
     private escapeStringForRegexp(s: string): string {
