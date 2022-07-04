@@ -26,6 +26,7 @@ export class CopyrightInserter {
     // 'mit' - MIT
     // 'gpl3' - GPL 3.0
     // 'agpl3' - Affero GPL 3.0
+    // 'mpl2' - MPL 2.0
     readonly CopyrightMap = new Map([
         ['apache', (holder: string, year: string) =>
 `Copyright ${year} ${holder}
@@ -97,7 +98,14 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.`]
+along with this program.  If not, see <https://www.gnu.org/licenses/>.`],
+
+        ['mpl2', (holder: string, year:string) =>
+`Copyright (C) ${year} ${holder}
+
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at <https://mozilla.org/MPL/2.0/>.`],
     ]);
 
     cachedLanguageConfigs = new Map();

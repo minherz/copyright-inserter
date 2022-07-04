@@ -50,3 +50,6 @@
 
 ## [1.0.12]
 - Change Json parser to improve parsing language configurations that do not comply with Json ECMA-262
+
+## [1.0.13]
+- Add `MPL 2.0` license to the list of the supported licenses. 

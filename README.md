@@ -2,7 +2,17 @@
 
 The Copyright Inserter is a VS Code extension that adds a copyright and license header into editing files. The development was inspired by [addlicense](https://github.com/google/addlicense) and [autogen](https://github.com/mbrukman/autogen) tools and comes to simplify the process of adding copyright and license into files during development by integrating with one of the most popular development environments.
 
-The extension supports [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0), [MIT](https://opensource.org/licenses/MIT), [BSD](http://www.linfo.org/bsdlicense.html), [GPL 3](https://www.gnu.org/licenses/gpl-3.0.en.html) and [Affero GPL 3](https://www.gnu.org/licenses/agpl-3.0.en.html) licenses.
+The extension supports the following licenses:
+
+**Copyright**
+- [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)
+- [MIT](https://opensource.org/licenses/MIT)
+- [BSD](http://www.linfo.org/bsdlicense.html)
+
+**Copyleft**
+- [GPL 3](https://www.gnu.org/licenses/gpl-3.0.en.html)
+- [Affero GPL 3](https://www.gnu.org/licenses/agpl-3.0.en.html)
+- [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/)
 
 ## Features
 
