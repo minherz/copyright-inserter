@@ -183,7 +183,7 @@ file, You can obtain one at <https://mozilla.org/MPL/2.0/>.`],
         for (const extension of vscode.extensions.all) {
             if (extension.packageJSON.contributes && extension.packageJSON.contributes.languages) {
                 const data = extension.packageJSON.contributes.languages.find((it: any) => it.id === id && (!fileExt || it.extensions.indexOf(fileExt) >= 0));
-                if (data) {
+                if (data && data.configuration) {
                     config = {
                         id: id,
                         firstLine: data.firstLine ? new RegExp(data.firstLine) : undefined,

@@ -53,3 +53,9 @@
 
 ## [1.0.13]
 - Add `MPL 2.0` license to the list of the supported licenses. 
+
+## [1.0.14]
+- Remove extra spaces in the text of licenses
+
+## [1.0.15]
+- Fix the error to address a use case when the language is defined but lacks configuration data

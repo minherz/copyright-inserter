@@ -3,7 +3,7 @@
 	"publisher": "minherz",
 	"displayName": "Copyright Inserter",
 	"description": "Inserts copyright header of the selected license into active editor",
-	"version": "1.0.13",
+	"version": "1.0.15",
 	"icon": "resources/copyright.jpg",
 	"license": "SEE LICENSE IN LICENSE",
 	"repository": {
@@ -75,7 +75,7 @@
 	},
 	"devDependencies": {
 		"@types/node": "^10.12.21",
-		"@types/vscode": "^1.32.0",
+		"@types/vscode": "^1.37.0",
 		"tslint": "^5.12.1",
 		"typescript": "^3.3.1"
 	},
