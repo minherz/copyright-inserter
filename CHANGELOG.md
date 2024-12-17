@@ -59,3 +59,6 @@
 
 ## [1.0.15]
 - Fix the error to address a use case when the language is defined but lacks configuration data
+
+## [1.0.16]
+- Add the Public Benefit Zero Copyright License as an option.

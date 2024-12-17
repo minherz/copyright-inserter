@@ -13,6 +13,7 @@ The extension supports the following licenses:
 - [GPL 3](https://www.gnu.org/licenses/gpl-3.0.en.html)
 - [Affero GPL 3](https://www.gnu.org/licenses/agpl-3.0.en.html)
 - [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/)
+- [PBZC](https://github.com/wmthornton/PBZC.git)
 
 ## Features
 
@@ -33,7 +34,7 @@ The extension can be invoked by typing `insert header` or `Copyright: insert hea
 This extension adds the following settings into `Extensions` section under `Copyright Inserter`:
 
 * `copyrightInserter.holder`: a string describing the copyright holder. Default value is `Google LLC`
-* `copyrightInserter.license`: one of the following literals that define the copyright license: `apache` for Apache 2.0, `bsd` for BSD, `mit` for MIT, `gpl3` for GPL version 3 and `agpl3` for Affero GPL version 3. Default value is `apache`.
+* `copyrightInserter.license`: one of the following literals that define the copyright license: `apache` for Apache 2.0, `bsd` for BSD, `mit` for MIT, `gpl3` for GPL version 3, `agpl3` for Affero GPL version 3 and `pbzc` for Public Benefit Zero Copyright License. Default value is `apache`.
 * `copyrightInserter.year`: a string describing the copyright year. Default value is empty string. If the string is empty, the current year will be used.
 * `copyrightInserter.useLineComment`: a boolean flag to describe selection between block and line comments. Default is `false`.
 
