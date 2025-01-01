@@ -17,6 +17,8 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { parse } from 'jsonc-parser'
 
+type LicenseTemplateFunction = (holder: string, year: string) => string;
+
 export class CopyrightInserter {
     // map of supported license labels to inline formatting functions that
     // insert copyright holder and year into the license
@@ -29,7 +31,7 @@ export class CopyrightInserter {
     // 'mpl2' - MPL 2.0
     readonly CopyrightMap = new Map([
         ['apache', (holder: string, year: string) =>
-`Copyright ${year} ${holder}
+            `Copyright ${year} ${holder}
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -44,12 +46,12 @@ See the License for the specific language governing permissions and
 limitations under the License.`],
 
         ['bsd', (holder: string, year: string) =>
-`Copyright (c) ${year} ${holder} All rights reserved.
+            `Copyright (c) ${year} ${holder} All rights reserved.
 Use of this source code is governed by a BSD-style
 license that can be found in the LICENSE file.`],
 
         ['mit', (holder: string, year: string) =>
-`Copyright (c) ${year} ${holder}
+            `Copyright (c) ${year} ${holder}
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -69,7 +71,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`],
 
         ['gpl3', (holder: string, year: string) =>
-`Copyright (c) ${year} ${holder}
+            `Copyright (c) ${year} ${holder}
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -84,8 +86,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <https://www.gnu.org/licenses/>.`],
 
-        ['agpl3', (holder: string, year:string) =>
-`Copyright (C) ${year} ${holder}
+        ['agpl3', (holder: string, year: string) =>
+            `Copyright (C) ${year} ${holder}
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -100,8 +102,8 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.`],
 
-        ['mpl2', (holder: string, year:string) =>
-`Copyright (C) ${year} ${holder}
+        ['mpl2', (holder: string, year: string) =>
+            `Copyright (C) ${year} ${holder}
 
 This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -114,8 +116,14 @@ file, You can obtain one at <https://mozilla.org/MPL/2.0/>.`],
 
     // insertCopyrightHeader reads extension configuration, determines language in the current editor and inserts copyright header according to the template
     public insertHeader(): void {
+        var licenseTemplate: LicenseTemplateFunction | undefined;
         let extensionConfig = this.getExtensionConfig();
-        let licenseTemplate = this.CopyrightMap.get(extensionConfig.license);
+
+        if (extensionConfig.license === 'custom') {
+            licenseTemplate = (holder: string, year: string) => extensionConfig.customText;
+        } else {
+            licenseTemplate = this.CopyrightMap.get(extensionConfig.license);
+        }
         if (!licenseTemplate) {
             console.error(`copyright-header-inserter: license type '${extensionConfig.license}' is not supported.`);
             return;
@@ -141,24 +149,23 @@ file, You can obtain one at <https://mozilla.org/MPL/2.0/>.`],
         let needLineBeforeBlock = this.hasMandatoryFirstLine(firstLine, language);
         let needLineAfterBlock = (firstLine && (!needLineBeforeBlock || editor.document.getText(new vscode.Range(1, 0, 2, 0)).trim())) ? true : false;
 
-        let header:string|undefined = this.formatHeader(licenseTemplate, language, extensionConfig);
+        let header: string | undefined = this.formatHeader(licenseTemplate, language, extensionConfig);
         if (!header) {
             return;
         }
 
-        editor.edit( b =>
-            {
-                let startLine:number = 0;
+        editor.edit(b => {
+            let startLine: number = 0;
 
-                if (needLineBeforeBlock === true) {
-                    header = "\n" + header;
-                    startLine = 1;
-                }
-                if (needLineAfterBlock === true) {
-                    header = header + "\n";
-                }
-                b.insert(new vscode.Position(startLine, 0), String(header));
-            });      
+            if (needLineBeforeBlock === true) {
+                header = "\n" + header;
+                startLine = 1;
+            }
+            if (needLineAfterBlock === true) {
+                header = header + "\n";
+            }
+            b.insert(new vscode.Position(startLine, 0), String(header));
+        });
     }
 
     private getExtensionConfig(): ExtensionConfiguration {
@@ -170,13 +177,14 @@ file, You can obtain one at <https://mozilla.org/MPL/2.0/>.`],
             data: new CopyrightData(
                 String(configView.get("copyrightInserter.holder")),
                 configView.get("copyrightInserter.year") || String((new Date()).getFullYear())
-                )
+            ),
+            customText: (configView.get("copyrightInserter.customText") || ""),
         };
     }
 
     private getLanguageConfigById(id: string, fileName: string): LanguageConfig | undefined {
-        let fileExt:string = path.extname(fileName).toLowerCase();
-        let config:LanguageConfig = this.cachedLanguageConfigs.get(id + "+" + fileExt);
+        let fileExt: string = path.extname(fileName).toLowerCase();
+        let config: LanguageConfig = this.cachedLanguageConfigs.get(id + "+" + fileExt);
         if (config) {
             return config;
         }
@@ -226,7 +234,7 @@ file, You can obtain one at <https://mozilla.org/MPL/2.0/>.`],
         catch (e) {
             if (!(e instanceof SyntaxError)) {
                 throw e;
-            }        
+            }
         }
         var fs = require('fs');
         var jsonString = fs.readFileSync(uri, 'utf8');
@@ -258,7 +266,7 @@ file, You can obtain one at <https://mozilla.org/MPL/2.0/>.`],
     }
 
     private formatString(header: string, first_line: string, prefix: string, last_line: string): string {
-        var result : string = "";
+        var result: string = "";
 
         if (first_line !== "") {
             result += first_line + "\n";
@@ -267,7 +275,7 @@ file, You can obtain one at <https://mozilla.org/MPL/2.0/>.`],
             const new_line = prefix + line;
             result += new_line.trimRight() + "\n";
         }
-        return result += last_line ? (last_line +"\n") : "";
+        return result += last_line ? (last_line + "\n") : "";
     }
 
     private formatHeader(template: (holder: string, year: string) => string, language: LanguageConfig, config: ExtensionConfiguration): string | undefined {
@@ -282,7 +290,7 @@ file, You can obtain one at <https://mozilla.org/MPL/2.0/>.`],
             let openExp = c!.blockComment[0];
             let closExp = c!.blockComment[1];
             // indent header by one space if first char of open comment same as last char of close comment
-            if (openExp[openExp.length-1] === closExp[0]) {
+            if (openExp[openExp.length - 1] === closExp[0]) {
                 header = this.formatString(header, c!.blockComment[0], " " + config.linePrefix, " " + c!.blockComment[1]);
             } else {
                 header = this.formatString(header, c!.blockComment[0], config.linePrefix, c!.blockComment[1]);
@@ -299,7 +307,7 @@ file, You can obtain one at <https://mozilla.org/MPL/2.0/>.`],
 }
 
 type LanguageConfig = {
-    id : string,
+    id: string,
     firstLine: RegExp | undefined;
     vsconfig: vscode.LanguageConfiguration
 };
@@ -309,6 +317,7 @@ type ExtensionConfiguration = {
     useLineComment: boolean,
     linePrefix: string,
     data: CopyrightData;
+    customText: string;
 };
 
 class CopyrightData {

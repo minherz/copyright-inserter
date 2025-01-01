@@ -3,7 +3,7 @@
 	"publisher": "minherz",
 	"displayName": "Copyright Inserter",
 	"description": "Inserts copyright header of the selected license into active editor",
-	"version": "1.0.15",
+	"version": "1.0.16",
 	"icon": "resources/copyright.jpg",
 	"license": "SEE LICENSE IN LICENSE",
 	"repository": {
@@ -14,7 +14,7 @@
 		"url": "https://github.com/minherz/copyright-inserter/issues"
 	},
 	"engines": {
-		"vscode": "^1.40.0"
+		"vscode": "^1.80.0"
 	},
 	"extensionKind": [
 		"ui",
@@ -39,29 +39,64 @@
 			"title": "Copyright Inserter",
 			"properties": {
 				"copyrightInserter.license": {
+					"order": 1,
 					"type": "string",
 					"default": "apache",
-					"description": "A type of the license. Supported license types are 'apache', 'mit', 'bsd', 'gpl3', 'agpl3' and 'mpl2"
+					"enum": [
+						"apache",
+						"agpl3",
+						"bsd",
+						"gpl3",
+						"mit",
+						"mpl2",
+						"custom"
+					],
+					"enumItemLabels": [
+						"Apache 2.0",
+						"Affero GPL 3",
+						"GPL 3",
+						"MIT",
+						"MPL 2",
+						"User defined"
+					],
+					"description": "A type of the license. Select \"User defined\" if you want to provide your custom license text."
 				},
 				"copyrightInserter.holder": {
+					"order": 2,
 					"type": "string",
 					"default": "Google LLC",
+					"maxLength": 128,
 					"description": "Copyright holder"
 				},
 				"copyrightInserter.year": {
+					"order": 3,
 					"type": "string",
 					"default": "",
+					"pattern": "^$|^\\d{4}$",
+					"patternErrorMessage": "A year should be empty or composed of 4 digits",
 					"description": "Copyright year. If not defined, the current year is used"
 				},
 				"copyrightInserter.useLineComment": {
+					"order": 5,
 					"type": "boolean",
 					"default": false,
+					"maxLength": 2048,
 					"description": "When language supports block and line comments always enforces the use of line comment"
 				},
 				"copyrightInserter.linePrefix": {
+					"order": 6,
 					"type": "string",
 					"default": "",
-					"description": "A short prefix string to place in all copyright lines before the text (except for first and last lines)"
+					"description": "A short prefix string to insert into all copyright lines before the text (except for first and last lines)"
+				},
+				"copyrightInserter.customText": {
+					"order": 4,
+					"type": [
+						"string",
+						"null"
+					],
+					"default": "",
+					"description": "Custom license text. Use '${year}' to mark the place for the copyright year and use '${holder}' to mark the place for the copyright holder."
 				}
 			}
 		}
