@@ -81,7 +81,6 @@
 					"order": 5,
 					"type": "boolean",
 					"default": false,
-					"maxLength": 2048,
 					"description": "When language supports block and line comments always enforces the use of line comment"
 				},
 				"copyrightInserter.linePrefix": {
@@ -94,6 +93,7 @@
 					"order": 4,
 					"type": "string",
 					"default": "",
+					"maxLength": 2048,
 					"description": "User-defined license text. Use '${year}' to mark the place for the copyright year and use '${holder}' to mark the place for the copyright holder."
 				}
 			}

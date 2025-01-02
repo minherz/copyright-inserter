@@ -5,11 +5,13 @@ The Copyright Inserter is a VS Code extension that adds a copyright and license 
 The extension supports the following licenses:
 
 **Copyright**
+
 - [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)
 - [MIT](https://opensource.org/licenses/MIT)
 - [BSD](http://www.linfo.org/bsdlicense.html)
 
 **Copyleft**
+
 - [GPL 3](https://www.gnu.org/licenses/gpl-3.0.en.html)
 - [Affero GPL 3](https://www.gnu.org/licenses/agpl-3.0.en.html)
 - [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/)
@@ -27,13 +29,12 @@ The extension can be invoked by typing `insert header` or `Copyright: insert hea
 
 ![Insert copyright header](resources/animation.gif)
 
-
 ## Extension Settings
 
 This extension adds the following settings into `Extensions` section under `Copyright Inserter`:
 
-* `copyrightInserter.holder`: a string describing the copyright holder. Default value is `Google LLC`
-* `copyrightInserter.license`: one of the following
+- `copyrightInserter.holder`: a string describing the copyright holder. Maximum length is 128 symbols. Default value is `Google LLC`
+- `copyrightInserter.license`: one of the following
   - "Apache 2.0 `apache`" for Apache License, Version 2.0
   - "Affero GPL 3 `agpl3`" for GNU Affero General Public License version 3
   - "BSD `bsd`" for BSD-style license
@@ -41,9 +42,9 @@ This extension adds the following settings into `Extensions` section under `Copy
   - "MIT `mit`" for MIT license
   - "MPL 2 `mpl2`" for Mozilla Public License version 2
   - "User defined `user`" for a license text that is provided by a user
-* `copyrightInserter.year`: a string describing the copyright year. Default value is empty string. If the string is empty, the current year will be used.
-* `copyrightInserter.useLineComment`: a boolean flag to describe selection between block and line comments. Default is `false`.
-* `copyrightInserter.userText`: 
+- `copyrightInserter.year`: a four digit copyright year or an empty string. If the string is empty, the current year will be used. Default value is empty string.
+- `copyrightInserter.useLineComment`: a boolean flag to describe selection between block and line comments. Default is `false`.
+- `copyrightInserter.userText`: A text of the user-defined license. It should use placeholders `${holder}` to include the copyright holder and `${year}` to include the copyright year. The maximum length is 2048 symbols. The `copyrightInserter.license` should be set to `user` in order to use the user-defined text for the license.
 
 ## Known Issues
 
