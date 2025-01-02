@@ -60,8 +60,6 @@
 ## [1.0.15]
 - Fix the error to address a use case when the language is defined but lacks configuration data.
 
-## [1.0.17]
-(skipping version 1.0.16 as experimental)
-
-- Enforce validation for configuration parameters.
+## [1.1.0]
 - Add support of license with a user provided text.
+- Enforce validation for configuration parameters.
