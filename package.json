@@ -3,7 +3,7 @@
 	"publisher": "minherz",
 	"displayName": "Copyright Inserter",
 	"description": "Inserts copyright header of the selected license into active editor",
-	"version": "1.0.16",
+	"version": "1.0.17",
 	"icon": "resources/copyright.jpg",
 	"license": "SEE LICENSE IN LICENSE",
 	"repository": {
@@ -14,7 +14,7 @@
 		"url": "https://github.com/minherz/copyright-inserter/issues"
 	},
 	"engines": {
-		"vscode": "^1.80.0"
+		"vscode": "^1.40.0"
 	},
 	"extensionKind": [
 		"ui",
@@ -49,11 +49,12 @@
 						"gpl3",
 						"mit",
 						"mpl2",
-						"custom"
+						"user"
 					],
 					"enumItemLabels": [
 						"Apache 2.0",
 						"Affero GPL 3",
+						"BSD",
 						"GPL 3",
 						"MIT",
 						"MPL 2",
@@ -89,14 +90,11 @@
 					"default": "",
 					"description": "A short prefix string to insert into all copyright lines before the text (except for first and last lines)"
 				},
-				"copyrightInserter.customText": {
+				"copyrightInserter.userText": {
 					"order": 4,
-					"type": [
-						"string",
-						"null"
-					],
+					"type": "string",
 					"default": "",
-					"description": "Custom license text. Use '${year}' to mark the place for the copyright year and use '${holder}' to mark the place for the copyright holder."
+					"description": "User-defined license text. Use '${year}' to mark the place for the copyright year and use '${holder}' to mark the place for the copyright holder."
 				}
 			}
 		}
@@ -111,7 +109,7 @@
 	"devDependencies": {
 		"@types/node": "^10.12.21",
 		"@types/vscode": "^1.37.0",
-		"tslint": "^5.12.1",
+		"tslint": "^5.19.0",
 		"typescript": "^3.3.1"
 	},
 	"dependencies": {

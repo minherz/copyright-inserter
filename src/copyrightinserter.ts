@@ -119,8 +119,8 @@ file, You can obtain one at <https://mozilla.org/MPL/2.0/>.`],
         var licenseTemplate: LicenseTemplateFunction | undefined;
         let extensionConfig = this.getExtensionConfig();
 
-        if (extensionConfig.license === 'custom') {
-            licenseTemplate = (holder: string, year: string) => extensionConfig.customText;
+        if (extensionConfig.license === 'user') {
+            licenseTemplate = (holder: string, year: string) => eval('`' + extensionConfig.userText + '`');
         } else {
             licenseTemplate = this.CopyrightMap.get(extensionConfig.license);
         }
@@ -178,7 +178,7 @@ file, You can obtain one at <https://mozilla.org/MPL/2.0/>.`],
                 String(configView.get("copyrightInserter.holder")),
                 configView.get("copyrightInserter.year") || String((new Date()).getFullYear())
             ),
-            customText: (configView.get("copyrightInserter.customText") || ""),
+            userText: (configView.get("copyrightInserter.userText") || ""),
         };
     }
 
@@ -189,8 +189,11 @@ file, You can obtain one at <https://mozilla.org/MPL/2.0/>.`],
             return config;
         }
         for (const extension of vscode.extensions.all) {
-            if (extension.packageJSON.contributes && extension.packageJSON.contributes.languages) {
-                const data = extension.packageJSON.contributes.languages.find((it: any) => it.id === id && (!fileExt || it.extensions.indexOf(fileExt) >= 0));
+            const contributes = extension.packageJSON.contributes;
+            if (contributes && contributes.languages) {
+                const data = contributes.languages.find(
+                    (it: any) => it.id === id && (!fileExt || it.extensions.indexOf(fileExt) >= 0)
+                );
                 if (data && data.configuration) {
                     config = {
                         id: id,
@@ -211,14 +214,14 @@ file, You can obtain one at <https://mozilla.org/MPL/2.0/>.`],
 
         if (c!.blockComment) {
             let bcStart = this.escapeStringForRegexp(c!.blockComment[0]);
-            // treat "^" working over multiple lines, ignore casing and allow "." to match newline 
+            // "mis" -> match in multiple lines, ignore casing and allow "." to match newline 
             if (new RegExp(`^${bcStart}.*Copyright`, "mis").test(prefix)) {
                 return true;
             }
         }
         if (c!.lineComment) {
             let lc = this.escapeStringForRegexp(c!.lineComment);
-            // treat "^" working over multiple lines and ignore casing
+            // "mi" -> match in multiple lines, ignore casing
             if (new RegExp(`^${lc}.*Copyright`, "mi").test(prefix)) {
                 return true;
             }
@@ -317,7 +320,7 @@ type ExtensionConfiguration = {
     useLineComment: boolean,
     linePrefix: string,
     data: CopyrightData;
-    customText: string;
+    userText: string;
 };
 
 class CopyrightData {
